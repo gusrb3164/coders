@@ -5,7 +5,7 @@ module.exports = {
 		commonjs: true,
 		es2021: true,
 	},
-	extends: ['airbnb', 'plugin:prettier/recommended'],
+	extends: ['airbnb', 'plugin:prettier/recommended', 'prettier/react'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
@@ -14,7 +14,7 @@ module.exports = {
 	},
 	plugins: ['prettier'],
 	rules: {
-		indent: ['error', 'tab'],
+		indent: ['error', 'tab', { SwitchCase: 1 }],
 		'import/prefer-default-export': ['off'],
 		'import/no-cycle': ['off'],
 		'react/prop-types': ['off'],
@@ -31,6 +31,7 @@ module.exports = {
 		'prettier/prettier': [
 			'error',
 			{
+				printWidth: 80,
 				tabWidth: 4,
 				useTabs: true,
 				endOfLine: 'auto',

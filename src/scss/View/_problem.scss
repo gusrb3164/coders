@@ -3,27 +3,26 @@
 	.problem-container {
 		width: 100%;
 		height: 100%;
-		.problem-menu {
+		.problem-bar {
 			display: flex;
 			width: 50%;
+			border-right: 50px transparent;
+			justify-content: space-between;
 			align-items: center;
 			background-color: $light-grey;
-			Button {
-				height: 100%;
-				font-size: 1rem;
-			}
-			.toggle {
-				cursor: pointer;
-				margin: 0% 2%;
-			}
-			.toggleThumb {
-				margin-left: auto;
-			}
-			.select {
-				margin-left: 2%;
+			.bar-item {
+				display: flex;
+				margin-right: 3%;
+				Button {
+					height: 100%;
+					font-size: 1rem;
+				}
 			}
 		}
-		.problem-info{
+		.problem-info {
+			width: 50%;
+			height: 70vh;
+			padding-right: 0.5%;
 			overflow-y: scroll;
 		}
 	}
