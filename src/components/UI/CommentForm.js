@@ -30,7 +30,7 @@ const CommentForm = ({ comments }) => {
 						/>
 					))}
 				</Grid>
-			) : null}
+			) : undefined}
 		</Grid>
 	);
 };

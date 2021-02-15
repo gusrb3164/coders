@@ -5,6 +5,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import ClearIcon from '@material-ui/icons/Clear';
 
 const Comment = ({ userName, comment, createAt }) => {
+	let time = ' ';
+	if (createAt != null) {
+		time = time.concat(createAt.substr(0, 10), ' ', createAt.substr(11, 5));
+	}
 	return (
 		<Grid
 			className="comment-container"
@@ -18,7 +22,7 @@ const Comment = ({ userName, comment, createAt }) => {
 					{userName}
 					<Typography className="created">
 						&nbsp;&nbsp;
-						{createAt.substr(0, 10)}&nbsp; {createAt.substr(11, 5)}
+						{time}
 						&nbsp;&nbsp;
 					</Typography>
 				</Typography>
