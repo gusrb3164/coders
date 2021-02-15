@@ -9,6 +9,7 @@ const problemInfo = data.problem_info[0];
 const problemComments = data.P_Comment;
 const submitLog = data.submit_log;
 const mySubmitLog = data.mySubmit_log;
+const problemLog = data.problem_log;
 // ==================================
 
 // ================= [ problem context ] ============================
@@ -137,3 +138,53 @@ export const useMySubmissionsDispatchContext = () => {
 	return context;
 };
 // ===================================================================
+
+// ================= [ problemSubmit context ] =========================
+const ProblemCodeContext = createContext();
+const ProblemCodeDispatchContext = createContext();
+
+export const ProblemCodeContextProvider = ({ children }) => {
+	const [problemSubmit, setProblemSubmit] = useState(problemLog);
+	return (
+		<ProblemCodeContext.Provider value={problemSubmit}>
+			<ProblemCodeDispatchContext.Provider value={setProblemSubmit}>
+				{children}
+			</ProblemCodeDispatchContext.Provider>
+		</ProblemCodeContext.Provider>
+	);
+};
+
+export const useProblemCodeContext = () => {
+	const context = useContext(ProblemCodeContext);
+	return context;
+};
+export const useProblemCodeDispatchContext = () => {
+	const context = useContext(ProblemCodeDispatchContext);
+	return context;
+};
+// ===================================================================
+// ================= [ user context ] ======================
+const UserDataContext = createContext();
+const UserDispatchContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+	const [users, setUsers] = useState(userData);
+
+	return (
+		<UserDataContext.Provider value={users}>
+			<UserDispatchContext.Provider value={setUsers}>
+				{children}
+			</UserDispatchContext.Provider>
+		</UserDataContext.Provider>
+	);
+};
+
+export const useUserDataContext = () => {
+	const context = useContext(UserDataContext);
+	return context;
+};
+
+export const useUserDispatchContext = () => {
+	const context = useContext(UserDispatchContext);
+	return context;
+};

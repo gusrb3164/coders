@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import { Grid } from '@material-ui/core';
 import { Route } from 'react-router-dom';
-
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import { Home, Login, User, Problem, Question, Rangking, Submit } from './View';
 import { Header, MenuBar } from './UI';
-
+import data from '../data.json';
 import {
 	useProblemDataContext,
 	useProblemDispatchContext,
@@ -17,56 +18,103 @@ import {
 	useSubmissionsDispatchContext,
 	useMySubmissionsContext,
 	useMySubmissionsDispatchContext,
+	useProblemCodeContext,
+	useProblemCodeDispatchContext,
+	useUserDataContext,
+	useUserDispatchContext,
 } from './Model';
 
 const ViewModel = () => {
-	const [hasMenu, setHasMenu] = useState(false);
 	const userName = '사용자';
 
 	const problems = useProblemDataContext();
-	// const setProblem = useProblemDispatchContext();
+	const setProblem = useProblemDispatchContext();
 
-	const pInfo = usePInfoContext();
-	// const setPInfo = usePInfoDispatchContext();
+	const problemInfo = usePInfoContext();
+	const setProblemInfo = usePInfoDispatchContext();
+	const handleProblemInfo = async (id) => {
+		try {
+			const info = await axios.get(`/api/v1/problems/${id}`);
+			setProblemInfo(info.data.desc);
+		} catch (e) {
+			setProblemInfo(null);
+		}
+	};
 
 	const comments = useCommentsContext();
-	// const setComments = useCommentsDispatchContext();
+	const setComments = useCommentsDispatchContext();
+	const handleComments = async (id) => {
+		try {
+			const info = await axios.get(`/api/v1/pcomments/${id}`);
+			console.log(info.data);
+			setComments(info.data);
+		} catch (e) {
+			setComments(null);
+		}
+	};
 
 	const submissions = useSubmissionsContext();
-	// const setSubmissions = useSubmissionsDispatchContext();
+	const setSubmissions = useSubmissionsDispatchContext();
+	const handleSubmissions = (problemId, memberId, language) => {
+		setSubmissions(data.submit_log);
+	};
 
 	const mySubmissions = useMySubmissionsContext();
-	// const setMySubmissions = useMySubmissionsDispatchContext();
+	const setMySubmissions = useMySubmissionsDispatchContext();
+	const handleMySubmissions = (problemId, memberId, language) => {
+		setMySubmissions(data.mySubmit_log);
+	};
+
+	const problemCode = useProblemCodeContext();
+	const setProblemCode = useProblemCodeDispatchContext();
+	const handleProblemCode = (id, lang, text) => {
+		setProblemCode(text);
+		console.log('id :', id, ', language : ', lang, ',code : ', text);
+	};
+
+	const users = useUserDataContext();
+	const setUserInfo = useUserDispatchContext();
 
 	return (
 		<>
 			<Header userName={userName} />
 			<Grid>
-				{hasMenu && <MenuBar />}
+				<MenuBar />
 				<Route
 					exact
 					path="/"
 					render={() => {
-						setHasMenu(true);
 						return <Home problems={problems} />;
 					}}
 				/>
 				<Route exact path="/login" component={Login} />
-				<Route exact path="/user" component={User} />
 				<Route
-					path="/problem"
+					path="/user"
+					render={() => <User users={users} problems={problems} />}
+				/>
+				<Route
+					path="/problem/:id"
 					render={() => (
 						<Problem
-							pInfo={pInfo}
+							problemInfo={problemInfo}
+							handleProblemInfo={handleProblemInfo}
 							comments={comments}
+							handleComments={handleComments}
 							submissions={submissions}
+							handleSubmissions={handleSubmissions}
 							mySubmissions={mySubmissions}
+							handleMySubmissions={handleMySubmissions}
+							problemCode={problemCode}
+							handleProblemCode={handleProblemCode}
 						/>
 					)}
 				/>
 				<Route path="/question" component={Question} />
 				<Route path="/submit" component={Submit} />
-				<Route path="/ranking" component={Rangking} />
+				<Route
+					path="/ranking"
+					render={() => <Rangking users={users} />}
+				/>
 			</Grid>
 		</>
 	);
